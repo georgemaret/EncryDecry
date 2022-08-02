@@ -9,17 +9,24 @@ class CaesarEncry  //this class has the function that is used to encry the plain
 public:
 	int key;
 	string plaintext,ciphertext;
-	CaesarEncry()
+	void inputFunc()
 	{
 		cout << "Enter the plaintext:  ";
-		cin >> plaintext;
+		cin.ignore();
+		getline(cin,plaintext);
 		cout << "Enter the key for caesar encryption:  ";
 		cin>>key;
 	}
 	string Cencry()
 	{
+		//inputFunc();
 		for (int i = 0; i < plaintext.length(); i++)
 		{
+			if (plaintext[i] == ' ')
+			{
+				ciphertext += " ";
+				continue;
+			}
 			if (isupper(plaintext[i]))
 				ciphertext += char(int(plaintext[i] + key - 65) % 26 + 65);
 
@@ -37,10 +44,11 @@ class CaesarDecry  //this class contains the function that is used to decrypt th
 	int key;
 	string plaintext, ciphertext;
 public:
-	CaesarDecry()
+	void inputFunc()
 	{
 		cout << "Enter the ciphertext: ";
-		cin >> ciphertext;
+		cin.ignore();
+		getline(cin, ciphertext);
 		cout << "Enter key for Decryption: ";
 		cin >> key;
 	}
@@ -48,6 +56,11 @@ public:
 	{
 		for (int i = 0; i < ciphertext.length(); i++)
 		{
+			if (ciphertext[i] == ' ')
+			{
+				plaintext += " ";
+				continue;
+			}
 			if (isupper(ciphertext[i]))
 				plaintext += char(int(ciphertext[i] - key - 65) % 26 + 65);
 
@@ -65,11 +78,12 @@ class VignereEncry  //this class contains the function that is used to encrypt a
 	string key, plaintext, ciphertext;
 public:
 
-	VignereEncry()
+	void inputFunc()
 	{
-		cout << "Please enter the plaintext to be encrypted(Uppercase only)"<<endl;
-		cin >> plaintext;
-		cout << "Please enter the key for encrypting the plaintext(Uppercase only)" << endl;
+		cout << "Please enter the plaintext to be encrypted : ";
+		cin.ignore();
+		getline(cin, plaintext);
+		cout << "Please enter the key for encrypting the plaintext : ";
 		cin >> key;
 	}
 	
@@ -81,13 +95,18 @@ public:
 		{
 			key = key + newkey;
 		}
-		cout << key<<endl;
+		//cout << key<<endl;
 		for (int j = 0; j < plaintext.length(); j++)
 		{
+			if (plaintext[j] == ' ')
+			{
+				ciphertext.push_back(' ');
+				continue;
+			}
 			char x = (plaintext[j] + key[j]) % 26;
 
 			// convert into alphabets(ASCII)
-			x += 'A';
+			x += 'a';
 
 			ciphertext.push_back(x);
 		}
@@ -101,11 +120,12 @@ class VignereDecry //this class contains the function that is used to decrypt a 
 	string key, plaintext, ciphertext;
 public:
 	
-	VignereDecry()
+	void inputFunc()
 	{
-		cout << "Enter the encrypted ciphertext to be decrypted(Uppercase only)" << endl;
-		cin >> ciphertext;
-		cout << "Enter the key text(Uppercase only)"<<endl;
+		cout << "Enter the encrypted ciphertext to be decrypted : " ;
+		cin.ignore();
+		getline(cin, ciphertext);
+		cout << "Enter the key text : ";
 		cin >> key;
 	}
 	string Vdecry()
@@ -118,10 +138,15 @@ public:
 		}
 		for (int j = 0; j < ciphertext.length(); j++)
 		{
-			char x = ((ciphertext[j] - key[j])+ 26 ) % 26;
+			if (ciphertext[j] == ' ')
+			{
+				plaintext.push_back(' ');
+				continue;
+			}
+			char x = ((ciphertext[j] + 14 - key[j]) ) % 26;
 
 			// convert into alphabets(ASCII)
-			x += 'A';
+			x += 'a';
 			plaintext.push_back(x);
 		}
 		cout << plaintext<<endl;
@@ -136,9 +161,10 @@ public:
 	
 	XORencry()
 	{
-		cout << "Enter the plaintext for XOR encryption"<<endl;
+		cout << "Enter the plaintext for XOR encryption : ";
 		cin >> plaintext;
-		cout << "Enter the key for Encryption"<<endl;
+		ciphertext = plaintext;
+		cout << "Enter the key for Encryption : ";
 		cin >> key;
 	}
 	string Encry()
@@ -152,6 +178,7 @@ public:
 		for (int i = 0; i < plaintext.length(); i++)
 		{
 			ciphertext[i] = plaintext[i] ^ key[i];
+			//cout << ciphertext;
 		}
 		cout << ciphertext<<endl;
 		return "";
@@ -167,6 +194,7 @@ public:
 	{
 		cout << "Enter the ciphertext for XOR decryption" << endl;
 		cin >> ciphertext;
+		plaintext = ciphertext;
 		cout << "Enter the key for Encryption"<<endl;
 		cin >> key;
 	}
@@ -202,18 +230,21 @@ int main()
 		if (func == 1)
 		{
 			CaesarEncry c;
+			c.inputFunc();
 			c.Cencry();
 			cout << endl;
 		}
 		else if (func == 2)
 		{
 			CaesarDecry d;
+			d.inputFunc();
 			d.Cdecry();
 			cout << endl;
 		}
 		else if (func == 3)
 		{
 			VignereEncry v;
+			v.inputFunc();
 			v.Vencry();
 			cout << endl;
 		}
@@ -221,6 +252,7 @@ int main()
 		else if (func == 4)
 		{
 			VignereDecry w;
+			w.inputFunc();
 			w.Vdecry();
 			cout << endl;
 		}
@@ -247,6 +279,7 @@ int main()
 		else
 		{
 			cout << "INVALID INPUT"<<endl;
+			break;
 		}
 		cout << "Ok, now ";
 	}
